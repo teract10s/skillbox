@@ -22,7 +22,7 @@ public class Cargo {
         return new Cargo(dimensions, weight, address, canTurn, numberOfRegistration, isFragile);
     }
 
-    public Cargo withWeight(double mass) {
+    public Cargo withWeight(double weight) {
         return new Cargo(dimensions, weight, address, canTurn, numberOfRegistration, isFragile);
     }
 
