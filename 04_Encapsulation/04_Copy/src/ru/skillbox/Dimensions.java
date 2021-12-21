@@ -11,6 +11,10 @@ public class Dimensions {
         this.length = length;
     }
 
+    public String getInfoDimensions(){
+        return width + "*" + height + "*" + length;
+    }
+
     public double getVolume(){
         return (width * height * length);
     }
