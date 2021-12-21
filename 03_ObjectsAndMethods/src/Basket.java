@@ -1,8 +1,8 @@
 public class Basket {
 
-    private static int countProduct = 0;
-    private static int countBasket = 0;
-    private static int totalPriceAtAllBasket;
+    private static double countProduct = 0;
+    private static double countBasket = 0;
+    private static double totalPriceAtAllBasket;
     private String items;
     private int totalPrice = 0;
     private int limit;
@@ -25,18 +25,6 @@ public class Basket {
         this.totalPrice = totalPrice;
     }
 
-    public static int getCountBasket() {
-        return countBasket;
-    }
-
-    public static int getTotalPriceAtAllBasket() {
-        return totalPriceAtAllBasket;
-    }
-
-    public static int getCountProduct() {
-        return countProduct;
-    }
-
     public static void increaseCountProduct(int count) {
         Basket.countProduct = Basket.countProduct + count;
     }
@@ -50,11 +38,11 @@ public class Basket {
     }
 
     public static double averagePriceProduct(){
-        return getTotalPriceAtAllBasket()/getCountProduct();
+        return totalPriceAtAllBasket / countProduct;
     }
 
     public static double averagePriceBasket(){
-        return getTotalPriceAtAllBasket()/getCountBasket();
+        return totalPriceAtAllBasket / countBasket;
     }
 
     public void add(String name, int price) {
@@ -115,7 +103,7 @@ public class Basket {
     public static void main(String[] args) {
         Basket basket1 = new Basket();
         basket1.add("Milk", 40);
-        basket1.add("Bear", 50);
+        basket1.add("Bear", 57);
 
         Basket basket2 = new Basket();
         basket2.add("Napkins", 10);
