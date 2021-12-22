@@ -3,18 +3,13 @@ package ru.skillbox;
 public class ArithmeticCalculator {
     private final int number1;
     private final int number2;
-    private Operation action;
 
     public ArithmeticCalculator(int number1, int number2) {
         this.number1 = number1;
         this.number2 = number2;
     }
 
-    public void calculate(Operation action){
-        this.action = action;
-    }
-
-    int Operation(){
+    public int calculate(Operation action){
         switch (action){
             case ADD -> {return number1 + number2;}
             case SUBTRACT -> {return number1 - number2;}
