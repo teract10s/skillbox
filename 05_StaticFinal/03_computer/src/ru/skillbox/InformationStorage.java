@@ -1,17 +1,17 @@
 package ru.skillbox;
 
 public class InformationStorage {
-    private final typeInformaionStorage type;
+    private final TypeInformaionStorage type;
     private final int size;
     private final double weight;
 
-    public InformationStorage(typeInformaionStorage type, int size, double weight) {
+    public InformationStorage(TypeInformaionStorage type, int size, double weight) {
         this.type = type;
         this.size = size;
         this.weight = weight;
     }
 
-    public typeInformaionStorage getType() {
+    public TypeInformaionStorage getType() {
         return type;
     }
 
@@ -23,7 +23,7 @@ public class InformationStorage {
         return weight;
     }
 
-    public String getInformationStorage(){
+    public String toString(){
         return "INFORMATION STORAGE" + "\n" +
                 "Type: " + getType() + "\n" +
                 "Size: " + getSize() + " Gb" + "\n" +

@@ -1,17 +1,17 @@
 package ru.skillbox;
 
 public class Keyboard {
-    private final typeKeyboard type;
+    private final TypeKeyboard type;
     private final boolean backlight;
     private final double weight;
 
-    public Keyboard(typeKeyboard type, boolean backlight, double weight) {
+    public Keyboard(TypeKeyboard type, boolean backlight, double weight) {
         this.type = type;
         this.backlight = backlight;
         this.weight = weight;
     }
 
-    public typeKeyboard getType() {
+    public TypeKeyboard getType() {
         return type;
     }
 
@@ -23,7 +23,7 @@ public class Keyboard {
         return weight;
     }
 
-    public String getKeyboard(){
+    public String toString(){
         return "KEYBOARD" + "\n" +
                 "Type: " + getType() + "\n" +
                 (isBacklight() ? "Has backlight" : "No backlight") + "\n" +

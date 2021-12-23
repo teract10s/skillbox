@@ -1,6 +1,6 @@
 package ru.skillbox;
 
-public enum typeScreen {
+public enum TypeScreen {
     IPS,
     TN,
     VA

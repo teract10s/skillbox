@@ -1,6 +1,6 @@
 package ru.skillbox;
 
-public enum typeKeyboard {
+public enum TypeKeyboard {
     MECHANICS,
     BUTTON,
     WITHOUTBUTTON,

@@ -13,29 +13,29 @@ public class Computer {
         this.vendor = vendor;
         this.name = name;
         this.processor = new Cpu(3.2, 8, "Intel", 0.6);
-        this.randomAccessMemory = new Ram(typeRAM.BurstEDORAM, 16, 0.2);
-        this.memory = new InformationStorage(typeInformaionStorage.SSD, 512, 0.3);
-        this.screen = new Screen(15.6, typeScreen.IPS, 0.9);
-        this.keyboard = new Keyboard(typeKeyboard.BUTTON, true, 0.7);
+        this.randomAccessMemory = new Ram(TypeRAM.BurstEDORAM, 16, 0.2);
+        this.memory = new InformationStorage(TypeInformaionStorage.SSD, 512, 0.3);
+        this.screen = new Screen(15.6, TypeScreen.IPS, 0.9);
+        this.keyboard = new Keyboard(TypeKeyboard.BUTTON, true, 0.7);
     }
 
-    public void withProcessor(Cpu processor){
+    public void setProcessor(Cpu processor) {
         this.processor = processor;
     }
 
-    public void withRandomAccessMemory(Ram randomAccessMemory){
+    public void setRandomAccessMemory(Ram randomAccessMemory) {
         this.randomAccessMemory = randomAccessMemory;
     }
 
-    public void withMemory(InformationStorage memory){
+    public void setMemory(InformationStorage memory) {
         this.memory = memory;
     }
 
-    public void withScreen(Screen screen){
+    public void setScreen(Screen screen) {
         this.screen = screen;
     }
 
-    public void withKeyboard(Keyboard keyboard){
+    public void setKeyboard(Keyboard keyboard) {
         this.keyboard = keyboard;
     }
 
@@ -49,8 +49,8 @@ public class Computer {
 
     public String toString(){
         return "COMPUTER: " + getVendor() + " " + getName() + "\n\n" +
-                processor.getCPU() + randomAccessMemory.getRAM() + memory.getInformationStorage()
-                + screen.getScreen() + keyboard.getKeyboard();
+                processor + randomAccessMemory + memory
+                + screen + keyboard;
     }
 
     public double getAllWeight(){

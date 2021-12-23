@@ -1,6 +1,6 @@
 package ru.skillbox;
 
-public enum typeInformaionStorage {
+public enum TypeInformaionStorage {
     HDD,
     SSD
 }

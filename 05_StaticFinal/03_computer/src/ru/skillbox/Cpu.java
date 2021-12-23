@@ -29,7 +29,7 @@ public class Cpu {
         return weight;
     }
 
-    public String getCPU(){
+    public String toString(){
         return  "CPU" + "\n" +
                 "Frequency: " + getFrequency() + " GHz" + "\n" +
                 "Number of cores: " + getNumberOfCores() + "\n" +

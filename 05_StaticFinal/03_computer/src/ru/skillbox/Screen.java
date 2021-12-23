@@ -2,10 +2,10 @@ package ru.skillbox;
 
 public class Screen {
     private final double diagonal;
-    private final typeScreen type;
+    private final TypeScreen type;
     private final double weight;
 
-    public Screen(double diagonal, typeScreen type, double weight) {
+    public Screen(double diagonal, TypeScreen type, double weight) {
         this.diagonal = diagonal;
         this.type = type;
         this.weight = weight;
@@ -15,7 +15,7 @@ public class Screen {
         return diagonal;
     }
 
-    public typeScreen getType() {
+    public TypeScreen getType() {
         return type;
     }
 
@@ -23,7 +23,7 @@ public class Screen {
         return weight;
     }
 
-    public String getScreen(){
+    public String toString(){
         return "SCREEN" + "\n" +
                 "Diagonal: " + getDiagonal() + " in" + "\n" +
                 "Type: " + getType() + "\n" +

@@ -1,6 +1,6 @@
 package ru.skillbox;
 
-public enum typeRAM {
+public enum TypeRAM {
     FPMRAM,
     EDORAM,
     BurstEDORAM,
