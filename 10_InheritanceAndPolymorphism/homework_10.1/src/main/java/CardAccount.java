@@ -1,4 +1,9 @@
 public class CardAccount extends BankAccount {
-    // не забывайте, обращаться к методам и конструкторам родителя
-    // необходимо используя super, например, super.put(10D);
+    private static final double COMMISSIONS = 0.01;
+
+    @Override
+    protected void take(double amountToTake) {
+        amountToTake += amountToTake * COMMISSIONS;
+        super.take(amountToTake);
+    }
 }
