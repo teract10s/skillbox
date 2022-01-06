@@ -1,72 +1,80 @@
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Company{
-    private static final int income = (int) (100_000 + 24_900_000 * Math.random());
+    private static final int INCOME = (int) (100_000 + 24_900_000 * Math.random());
 
-    TreeSet<Employee> workers = new TreeSet<>(new Comparator<>() {
-        @Override
-        public int compare(Employee o1, Employee o2) {
-            return Integer.compare(o2.getMonthSalary(), o1.getMonthSalary());
-        }
-    });
+    private TreeSet<Employee> workers = createWorkersList();
 
-    public ArrayList<Employee> getTopSalaryStaff(int count){
-        ArrayList<Employee> answer = new ArrayList<>(workers);
+    private TreeSet<Employee> createWorkersList(){
+        TreeSet<Employee> answer = new TreeSet<>(
+        new Comparator<>() {
+            @Override
+            public int compare(Employee o1, Employee o2) {
+                return Integer.compare(o2.getMonthSalary(), o1.getMonthSalary());
+            }
+        });
+        return answer;
+    }
 
-        for (int i = workers.size() - 1; i > workers.size() - count - 1; i--){
-            System.out.println(answer.get(i).getMonthSalary() + " руб.");
+    public TreeSet<Employee> getWorkers() {
+        return workers;
+    }
+
+    public List<Employee> getTopSalaryStaff(int count){
+        List<Employee> answer = new ArrayList<>(workers).subList(0, count);
+
+        for (Employee e : answer){
+            System.out.println(e.getMonthSalary() + " руб.");
         }
         return answer;
     }
 
-    public ArrayList<Employee> getLowestSalaryStaff(int count){
-        ArrayList<Employee> answer = new ArrayList<>(workers);
+    public List<Employee> getLowestSalaryStaff(int count){
+        List<Employee> answer = new ArrayList<>(workers).subList(workers.size() - count - 1, workers.size() - 1);
 
-        for (int i = 0; i < count; i++){
-            System.out.println(answer.get(i).getMonthSalary() + " руб.");
+        for (Employee e : answer){
+            System.out.println(e.getMonthSalary() + " руб.");
         }
         return answer;
     }
 
     @Override
     public String toString(){
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         int i = 0;
         for (Employee e : workers){
-            answer += ++i + ". " + e.getMonthSalary() + " руб.  " + e.getClass().toString() + "\n";
+            answer.append(++i).append(". ").append(e.getMonthSalary()).append(" руб.  ").append(e.getClass().toString()).append("\n");
         }
-        return answer;
+        return answer.toString();
     }
 
     public int getIncome(){
-        return income;
+        return INCOME;
     }
 
 //                            ADD/REMOVE worker
 
-    public void hire(String position){
-        switch (position){
-            case "Manager" -> addManager();
-            case "TopManager" ->  addTopManager();
-            case "Operator" -> addOperator();
+    public void hire(TypeOfWorkers type, String position){
+        switch (type){
+            case Manager -> addManager();
+            case TopManager ->  addTopManager();
+            case Operator -> addOperator();
         }
     }
 
-    public void hireAll(int count, String position){
-        switch (position){
-            case "Manager" -> {
+    public void hireAll(int count, TypeOfWorkers type){
+        switch (type){
+            case Manager -> {
                 for (int i = 0; i < count; i++) {
                     addManager();
                 }
             }
-            case "TopManager" -> {
+            case TopManager -> {
                 for (int i = 0; i < count; i++) {
                     addTopManager();
                 }
             }
-            case "Operator" -> {
+            case Operator -> {
                 for (int i = 0; i < count; i++) {
                     addOperator();
                 }
@@ -89,10 +97,29 @@ public class Company{
         workers.add(operator);
     }
 
-    public void fire(int index){
-        ArrayList<Employee> newWorkersList = new ArrayList<>(workers);
-        newWorkersList.remove(index);
-        workers.removeAll(workers);
-        workers.addAll(newWorkersList);
+    public void fire(int interest, TypeOfWorkers type){
+        Iterator<Employee> iter = workers.iterator();
+        int i = 0;
+        int indexToRemove = 100 / interest;
+
+        while (iter.hasNext()){
+            boolean admissibilityOfTheIndex = i % indexToRemove == 0;
+            boolean sameType = sameType(iter.next(), type);
+
+            if (admissibilityOfTheIndex && sameType && iter.hasNext()){
+                iter.remove();
+            }
+            i++;
+        }
+    }
+
+    private boolean sameType(Employee clas, TypeOfWorkers type){
+        String str = "";
+        switch (clas.getClass().toString()){
+            case "class Operator" -> str = "Operator";
+            case "class Manager" -> str = "Manager";
+            case "class TopManager" -> str = "TopManager";
+        }
+        return str.equals(type.toString());
     }
 }

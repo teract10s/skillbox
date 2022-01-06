@@ -1,7 +1,7 @@
 public class TopManager
         implements Employee{
     Company company = new Company();
-    int FIX_PRICE = (int) (75_000 + 50_000 * Math.random());
+    private static final int FIX_PRICE = (int) (75_000 + 50_000 * Math.random());
 
     @Override
     public int getMonthSalary() {
@@ -11,9 +11,4 @@ public class TopManager
         }
         return price;
     }
-
-//    @Override
-//    public int compareTo(Employee o) {
-//        return Integer.compare(this.getMonthSalary(), o.getMonthSalary());
-//    }
 }
