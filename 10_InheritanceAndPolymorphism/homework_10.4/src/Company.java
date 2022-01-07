@@ -104,16 +104,20 @@ public class Company{
 
         while (iter.hasNext()){
             boolean admissibilityOfTheIndex = i % indexToRemove == 0;
-            String clas = iter.next().getClass().toString();
-            int first = clas.indexOf(' ');
-            int end = clas.length();
-            clas = clas.substring(first + 1, end);
-            boolean sameType = clas.equals(type.toString());
+            boolean sameType = sameType(iter.next(), type);
 
             if (admissibilityOfTheIndex && sameType && iter.hasNext()){
                 iter.remove();
             }
             i++;
         }
+    }
+
+    private boolean sameType(Employee iter, TypeOfWorkers type){
+        String clas = iter.getClass().toString();
+        int first = clas.indexOf(' ');
+        int end = clas.length();
+        clas = clas.substring(first + 1, end);
+        return clas.equals(type.toString());
     }
 }

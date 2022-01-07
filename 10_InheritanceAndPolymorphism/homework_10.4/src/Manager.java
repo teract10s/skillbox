@@ -7,4 +7,5 @@ public class Manager implements Employee{
     public int getMonthSalary() {
         return (int) (INTEREST * earningForTheCompany + FIX_PRICE);
     }
+
 }

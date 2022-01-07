@@ -5,4 +5,5 @@ public class Operator implements Employee{
     public int getMonthSalary() {
         return FIX_PRICE;
     }
+
 }

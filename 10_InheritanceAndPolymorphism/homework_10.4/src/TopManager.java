@@ -10,4 +10,5 @@ public class TopManager implements Employee{
         }
         return price;
     }
+
 }
