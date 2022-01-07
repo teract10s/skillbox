@@ -1,5 +1,4 @@
-public class TopManager
-        implements Employee{
+public class TopManager implements Employee{
     Company company = new Company();
     private static final int FIX_PRICE = (int) (75_000 + 50_000 * Math.random());
 

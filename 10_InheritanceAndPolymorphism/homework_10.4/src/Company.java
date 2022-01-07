@@ -54,7 +54,7 @@ public class Company{
 
 //                            ADD/REMOVE worker
 
-    public void hire(TypeOfWorkers type, String position){
+    public void hire(TypeOfWorkers type){
         switch (type){
             case Manager -> addManager();
             case TopManager ->  addTopManager();
@@ -104,22 +104,16 @@ public class Company{
 
         while (iter.hasNext()){
             boolean admissibilityOfTheIndex = i % indexToRemove == 0;
-            boolean sameType = sameType(iter.next(), type);
+            String clas = iter.next().getClass().toString();
+            int first = clas.indexOf(' ');
+            int end = clas.length();
+            clas = clas.substring(first + 1, end);
+            boolean sameType = clas.equals(type.toString());
 
             if (admissibilityOfTheIndex && sameType && iter.hasNext()){
                 iter.remove();
             }
             i++;
         }
-    }
-
-    private boolean sameType(Employee clas, TypeOfWorkers type){
-        String str = "";
-        switch (clas.getClass().toString()){
-            case "class Operator" -> str = "Operator";
-            case "class Manager" -> str = "Manager";
-            case "class TopManager" -> str = "TopManager";
-        }
-        return str.equals(type.toString());
     }
 }

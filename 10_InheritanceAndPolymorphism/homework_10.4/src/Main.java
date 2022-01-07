@@ -6,7 +6,7 @@ public class Main {
         company.hireAll(80, TypeOfWorkers.Manager);
         company.hireAll(10, TypeOfWorkers.TopManager);
 
-        System.out.println("\n\n\nTOP SALARY STAFF:");
+        System.out.println("TOP SALARY STAFF:");
         company.getTopSalaryStaff(15);
 
         System.out.println("\n\nLOWEST SALARY STAFF:");
