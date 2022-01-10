@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Employee {
-
   private String name;
   private Integer salary;
   private Date workStart;
