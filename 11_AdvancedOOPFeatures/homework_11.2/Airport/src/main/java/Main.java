@@ -1,31 +1,43 @@
 import com.skillbox.airport.Airport;
 import com.skillbox.airport.Flight;
-import com.skillbox.airport.Terminal;
+import net.sf.saxon.functions.Abs;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
         Airport airport = Airport.getInstance();
-        System.out.println(findPlanesLeavingInTheNextTwoHours(airport));
+        findPlanesLeavingInTheNextTwoHours(airport);
     }
 
     public static List<Flight> findPlanesLeavingInTheNextTwoHours(Airport airport) {
-        //TODO Метод должден вернуть список рейсов вылетающих в ближайшие два часа.
-        LocalDate now = LocalDate.now();
-        List<Terminal> terminal = airport.getTerminals();
-        List<Flight> answer = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        int nowHour = now.getHour();
+        int nowDay = now.getDayOfMonth();
 
-        for (Terminal t : terminal){
-            List<Flight> intermediateList = t.getFlights().stream()
-                    .filter(f -> f.getDate().getHours() - now.atStartOfDay().getHour() <= 2)
-                    .collect(Collectors.toList());
-            answer.addAll(intermediateList);
-        }
-        return answer;
+        return airport.getTerminals().stream()
+                .map(t -> t.getFlights())
+                .flatMap(flight -> flight.stream())
+                .filter(f -> {
+                    LocalDateTime departureTime  = getLocalDate(f.getDate());
+                    boolean suitableType = f.getType() == Flight.Type.DEPARTURE;
+                    boolean suitableHour = Math.abs(departureTime.getHour() - nowHour) <= 2;
+                    boolean suitableDay = departureTime.getDayOfMonth() == nowDay;
+
+                    if (suitableHour && suitableDay && suitableType) {
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }).collect(Collectors.toList());
+    }
+
+    private static LocalDateTime getLocalDate(Date date){
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 
 }
