@@ -10,29 +10,32 @@ public class CustomerStorage {
         storage = new HashMap<>();
     }
 
-    public void addCustomer(String data) {
-        final int INDEX_NAME = 0;
-        final int INDEX_SURNAME = 1;
-        final int INDEX_EMAIL = 2;
-        final int INDEX_PHONE = 3;
+    public void addCustomer(String data){
+        final int indexName = 0;
+        final int indexSurname = 1;
+        final int indexEmail = 2;
+        final int indexPhone = 3;
 
         String[] components = data.split("\\s+");
+
+        boolean correctNumber = components[indexPhone].matches(REGEX_AT_PHONE_NUMBER);
+        boolean correctEmail = components[indexEmail].matches(REGEX_AT_EMAIL);
+
         if (components.length != 4) {
             throw new IllegalArgumentException("Wrong format. Correct format: \n" +
                     "add Василий Петров vasily.petrov@gmail.com +79215637722");
         }
-        String name = components[INDEX_NAME] + " " + components[INDEX_SURNAME];
-
-        boolean correctNumber = components[INDEX_PHONE].matches(REGEX_AT_PHONE_NUMBER);
-        boolean correctEmail = components[INDEX_EMAIL].matches(REGEX_AT_EMAIL);
 
         if (correctEmail && correctNumber) {
-            storage.put(name, new Customer(name, components[INDEX_PHONE], components[INDEX_EMAIL]));
+            String name = components[indexName] + " " + components[indexSurname];
+            storage.put(name, new Customer(name, components[indexPhone], components[indexEmail]));
         }else{
-            String message = "";
-            message += correctEmail ? "" : "Wrong email format. \nCorrect email format: vasily.petrov@gmail.com";
-            message += correctNumber ? "" : "Wrong number format. \nCorrect number format: +79215637722";
-            System.out.println(message);
+            if (!correctEmail){
+                throw new RuntimeException("Wrong email format. \nCorrect email format: vasily.petrov@gmail.com");
+            }
+            if (!correctNumber){
+                throw new RuntimeException("Wrong number format. \nCorrect number format: +79215637722");
+            }
         }
     }
 

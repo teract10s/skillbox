@@ -30,9 +30,8 @@ public class Main {
                 } else {
                     System.out.println(COMMAND_ERROR);
                 }
-            }
-            catch (IllegalArgumentException ex){
-                System.out.println(ex.getMessage());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
     }
