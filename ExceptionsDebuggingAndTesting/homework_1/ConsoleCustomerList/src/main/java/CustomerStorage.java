@@ -4,7 +4,7 @@ import java.util.Map;
 public class CustomerStorage {
     private final Map<String, Customer> storage;
     private static final String REGEX_AT_PHONE_NUMBER = "\\+79[0-9]{9}";
-    private static final String REGEX_AT_PHONE_EMAIL = "[a-z]{1,}([.\\-_][a-z]{1,})?@[a-z]{1,}\\.[a-z]{2,3}";
+    private static final String REGEX_AT_EMAIL = "[a-z]{1,}([.\\-_][a-z]{1,})?@[a-z]{1,}\\.[a-z]{2,3}";
 
     public CustomerStorage() {
         storage = new HashMap<>();
@@ -24,7 +24,7 @@ public class CustomerStorage {
         String name = components[INDEX_NAME] + " " + components[INDEX_SURNAME];
 
         boolean correctNumber = components[INDEX_PHONE].matches(REGEX_AT_PHONE_NUMBER);
-        boolean correctEmail = components[INDEX_EMAIL].matches(REGEX_AT_PHONE_EMAIL);
+        boolean correctEmail = components[INDEX_EMAIL].matches(REGEX_AT_EMAIL);
 
         if (correctEmail && correctNumber) {
             storage.put(name, new Customer(name, components[INDEX_PHONE], components[INDEX_EMAIL]));
