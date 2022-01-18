@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите путь к папке");
-        String path = scanner.next();
+        String path = scanner.nextLine();
 
         String answer = "Размер папки " + path + " cоставляет "
                 + trueDimensionality(FileUtils.calculateFolderSize(path));
