@@ -18,7 +18,6 @@ public class Main {
     private static Logger loggerErrorInput;
     private static Logger loggerError;
 
-
     private static final String DATA_FILE = "src/main/resources/map.json";
     private static Scanner scanner;
 
@@ -160,7 +159,7 @@ public class Main {
                 );
                 stationIndex.addLine(line);
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             loggerError.log(Level.ERROR, e.getMessage());
         }
     }
