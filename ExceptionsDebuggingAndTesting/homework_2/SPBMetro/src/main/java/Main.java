@@ -33,8 +33,8 @@ public class Main {
 
         System.out.println("Программа расчёта маршрутов метрополитена Санкт-Петербурга\n");
         scanner = new Scanner(System.in);
-        for (; ; ) {
-            try {
+        try {
+            for (; ; ) {
                 Station from = takeStation("Введите станцию отправления:");
                 Station to = takeStation("Введите станцию назначения:");
 
@@ -44,9 +44,9 @@ public class Main {
 
                 System.out.println("Длительность: " +
                         RouteCalculator.calculateDuration(route) + " минут");
-            }catch (Exception e){
-                loggerError.log(Level.ERROR, e.getMessage());
             }
+        } catch (Exception e) {
+            loggerError.log(Level.ERROR, e.getMessage());
         }
     }
 
@@ -106,51 +106,63 @@ public class Main {
     }
 
     private static void parseConnections(JSONArray connectionsArray) {
-        connectionsArray.forEach(connectionObject ->
-        {
-            JSONArray connection = (JSONArray) connectionObject;
-            List<Station> connectionStations = new ArrayList<>();
-            connection.forEach(item ->
+        try {
+            connectionsArray.forEach(connectionObject ->
             {
-                JSONObject itemObject = (JSONObject) item;
-                int lineNumber = ((Long) itemObject.get("line")).intValue();
-                String stationName = (String) itemObject.get("station");
+                JSONArray connection = (JSONArray) connectionObject;
+                List<Station> connectionStations = new ArrayList<>();
+                connection.forEach(item ->
+                {
+                    JSONObject itemObject = (JSONObject) item;
+                    int lineNumber = ((Long) itemObject.get("line")).intValue();
+                    String stationName = (String) itemObject.get("station");
 
-                Station station = stationIndex.getStation(stationName, lineNumber);
-                if (station == null) {
-                    throw new IllegalArgumentException("core.Station " +
-                            stationName + " on line " + lineNumber + " not found");
-                }
-                connectionStations.add(station);
+                    Station station = stationIndex.getStation(stationName, lineNumber);
+                    if (station == null) {
+                        throw new IllegalArgumentException("core.Station " +
+                                stationName + " on line " + lineNumber + " not found");
+                    }
+                    connectionStations.add(station);
+                });
+                stationIndex.addConnection(connectionStations);
             });
-            stationIndex.addConnection(connectionStations);
-        });
+        }catch (Exception e){
+            loggerError.log(Level.ERROR, e.getMessage());
+        }
     }
 
     private static void parseStations(JSONObject stationsObject) {
-        stationsObject.keySet().forEach(lineNumberObject ->
-        {
-            int lineNumber = Integer.parseInt((String) lineNumberObject);
-            Line line = stationIndex.getLine(lineNumber);
-            JSONArray stationsArray = (JSONArray) stationsObject.get(lineNumberObject);
-            stationsArray.forEach(stationObject ->
+        try {
+            stationsObject.keySet().forEach(lineNumberObject ->
             {
-                Station station = new Station((String) stationObject, line);
-                stationIndex.addStation(station);
-                line.addStation(station);
+                int lineNumber = Integer.parseInt((String) lineNumberObject);
+                Line line = stationIndex.getLine(lineNumber);
+                JSONArray stationsArray = (JSONArray) stationsObject.get(lineNumberObject);
+                stationsArray.forEach(stationObject ->
+                {
+                    Station station = new Station((String) stationObject, line);
+                    stationIndex.addStation(station);
+                    line.addStation(station);
+                });
             });
-        });
+        }catch (Exception e){
+            loggerError.log(Level.ERROR, e.getMessage());
+        }
     }
 
     private static void parseLines(JSONArray linesArray) {
-        linesArray.forEach(lineObject -> {
-            JSONObject lineJsonObject = (JSONObject) lineObject;
-            Line line = new Line(
-                    ((Long) lineJsonObject.get("number")).intValue(),
-                    (String) lineJsonObject.get("name")
-            );
-            stationIndex.addLine(line);
-        });
+        try {
+            linesArray.forEach(lineObject -> {
+                JSONObject lineJsonObject = (JSONObject) lineObject;
+                Line line = new Line(
+                        ((Long) lineJsonObject.get("number")).intValue(),
+                        (String) lineJsonObject.get("name")
+                );
+                stationIndex.addLine(line);
+            });
+        }catch (Exception e){
+            loggerError.log(Level.ERROR, e.getMessage());
+        }
     }
 
     private static String getJsonFile() {
@@ -160,6 +172,7 @@ public class Main {
             lines.forEach(line -> builder.append(line));
         } catch (Exception ex) {
             ex.printStackTrace();
+            loggerError.log(Level.ERROR, ex.getMessage());
         }
         return builder.toString();
     }
