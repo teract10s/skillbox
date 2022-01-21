@@ -13,7 +13,6 @@ public class Movements {
     public Movements(String pathMovementsCsv) {
         movementFile = pathMovementsCsv;
         movements = loadMovementFromFile();
-        getExpenseSum();
     }
 
     public double getExpenseSum() {
@@ -49,8 +48,8 @@ public class Movements {
         try {
             double coming = toDouble(fragments[6]);
             double consumption = toDouble(fragments[7]);
-            String key = fragments[5].substring(20, 65);
 
+            String key = fragments[5].substring(20, 65);
             Double value = consumption;
             if (organizations.containsKey(key)){
                 value += organizations.get(key);
