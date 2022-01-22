@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Main {
     public static void main(String[] args){
         try {
-            Document doc = Jsoup.connect("https://lenta.ru/").get();
+            Document doc = Jsoup.connect("https://skillbox-java.github.io/").get();
 
             Elements elements = doc.select("img");
             AtomicInteger i = new AtomicInteger();
