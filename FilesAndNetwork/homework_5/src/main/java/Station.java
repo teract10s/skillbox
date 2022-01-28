@@ -31,6 +31,9 @@ public class Station implements Comparable<Station> {
 
     @Override
     public String toString() {
-        return name;
+        return "Station{" +
+                "line=" + line.getNumber() +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

@@ -43,7 +43,6 @@ public class Line implements Comparable<Line> {
         return "Line{" +
                 "number=" + number +
                 ", name='" + name + '\'' +
-                ", stations=" + stations +
                 '}';
     }
 }
