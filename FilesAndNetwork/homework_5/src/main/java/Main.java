@@ -1,16 +1,17 @@
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
 
 public class Main {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static void main(String[] args) {
-        Parser parser = new Parser();
-        parser.parse("https://skillbox-java.github.io/");
+        try {
+            Parser parser = new Parser();
+            Metro metro = parser.parse("https://skillbox-java.github.io/");
 
-        Metro metro = new Metro(parser);
-
-        String json = GSON.toJson(metro);
-        System.out.println(json);
+            objectMapper.writeValue(new File("src/main/resources/output.json"), metro);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }

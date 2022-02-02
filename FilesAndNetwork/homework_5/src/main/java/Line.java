@@ -1,18 +1,21 @@
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Line implements Comparable<Line> {
-    private final int number;
+    private final String number;
     private final String name;
+    @JsonIgnore
     private final List<Station> stations;
 
-    public Line(int number, String name) {
+    public Line(String number, String name) {
         this.number = number;
         this.name = name;
         stations = new ArrayList<>();
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
@@ -30,7 +33,7 @@ public class Line implements Comparable<Line> {
 
     @Override
     public int compareTo(Line line) {
-        return Integer.compare(number, line.getNumber());
+        return number.compareTo(line.getNumber());
     }
 
     @Override
@@ -40,9 +43,10 @@ public class Line implements Comparable<Line> {
 
     @Override
     public String toString() {
-        return "Line{" +
-                "number=" + number +
-                ", name='" + name + '\'' +
-                '}';
+        return "\n\nLine{" +
+                "\n\tnumber = '" + number + '\'' +
+                "\n\tname = '" + name + '\'' +
+                "\n\tstations = " + stations +
+                "\n}";
     }
 }

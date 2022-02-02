@@ -1,4 +1,7 @@
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Station implements Comparable<Station> {
+    @JsonIgnore
     private final Line line;
     private final String name;
 

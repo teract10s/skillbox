@@ -5,17 +5,19 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Parser {
     private static Logger logger;
     private ArrayList<Line> allLine;
-    private ArrayList<Station> allStations;
-    private ArrayList<Station>[] allConnections;
 
-    public void parse(String url) {
+    public Metro parse(String url) {
+        Metro result = new Metro();
         allLine = new ArrayList<>();
-        allStations = new ArrayList<>();
+        ArrayList<Station> allStations = new ArrayList<>();
+        ArrayList<List<Station>> allConnections = new ArrayList<>();
+
         try {
             Document doc = Jsoup.connect(url).get();
             logger = LogManager.getLogger("fileLogger");
@@ -30,59 +32,78 @@ public class Parser {
             AtomicInteger j = new AtomicInteger(1);
             lines.forEach(e -> {
                 int number = j.getAndIncrement();
-                Line line = new Line(number, e.text());
+                String strNumber = getNumberStr(number);
+                Line line = new Line(strNumber, e.text());
                 addStation(allSt.get(number - 1), line);
                 allLine.add(line);
             });
 
-            ArrayList<Station>[] connection = new ArrayList[singleStations.size()];
-
-            int i = 0;
             for (Element st : singleStations) {
-                i++;
                 if (!st.select("span[title]").isEmpty()) {
                     String p = st.select("span[title]").toString();
                     String name = st.select("span.name").text();
-                    connection[i] = addConnection(p, name, searchLineAboutStation(name, allLine)).getConnection();
+                    List<Station> con = (addConnection(p, name, searchLineAboutStation(name, allLine)));
+                    allConnections.add(con);
                 }
             }
-            allConnections = connection;
+
+            result.setAllLine(allLine);
+            result.setAllConnections(allConnections);
+            result.setAllStations(allStations);
         } catch (Exception ex) {
             logger.error(ex.getMessage());
             System.out.println(ex.getMessage());
+            return result;
         }
+        return result;
     }
 
-    private Connection addConnection(String p, String name, int number) {
+    private String getNumberStr(int number){
+        String result = null;
+
+        if (number < 12){
+            result = String.valueOf(number);
+        }
+        switch (number){
+            case 12 -> result = "11A";
+            case 13 -> result = "12";
+            case 14 -> result = "14";
+            case 15 -> result = "15";
+            case 16 -> result = "D1";
+            case 17 -> result = "D2";
+        }
+        return result;
+    }
+
+    private List<Station> addConnection(String p, String name, String number) {
         String[] stations = p.split("\n");
-        Connection con = new Connection();
+        List<Station> con = new ArrayList<>();
 
         Station stat1 = new Station(name, getLineAtNumber(number));
-        con.addConnect(stat1);
+        con.add(stat1);
 
         for(String st : stations) {
             String nameOfStation = getNameAtSt(st);
-            int numberOfLine = getNumberAtSt(st);
+            String numberOfLine = getNumberAtSt(st);
 
             Station stat2 = new Station(nameOfStation, getLineAtNumber(numberOfLine, number));
-            con.addConnect(stat2);
+            con.add(stat2);
         }
-
         return con;
     }
 
-    private Line getLineAtNumber(int number){
+    private Line getLineAtNumber(String number){
         for (Line line : allLine) {
-            if (number == line.getNumber()) {
+            if (number.equals(line.getNumber())) {
                 return line;
             }
         }
         return null;
     }
 
-    private Line getLineAtNumber(int number, int notThisNumber){
+    private Line getLineAtNumber(String number, String notThisNumber){
         for (Line line : allLine) {
-            if (number == line.getNumber() && line.getNumber() != notThisNumber) {
+            if (number.equals(line.getNumber()) && !line.getNumber().equals(notThisNumber)) {
                 return line;
             }
         }
@@ -95,20 +116,12 @@ public class Parser {
         return st.substring(startName, endName);
     }
 
-    private int getNumberAtSt(String st) {
+    private String getNumberAtSt(String st) {
         int startNumber = st.indexOf("<span class=\"t-icon-metroln ln-") + 31;
         int endNumber = st.indexOf('"', startNumber);
-        String strNumber = st.substring(startNumber, endNumber);
-        int result;
-        switch (strNumber) {
-            case "11A" -> result = 12;
-            case "12" -> result = 13;
-            case "D1" -> result = 16;
-            case "D2" -> result = 17;
-            default -> result = Integer.parseInt(strNumber);
-        }
-        return result;
+        return st.substring(startNumber, endNumber);
     }
+
 
     private static void addStation(Elements stations, Line line) {
         stations.forEach(st -> {
@@ -117,13 +130,13 @@ public class Parser {
         });
     }
 
-    private int searchLineAboutStation(String name, ArrayList<Line> allLine) {
+    private String searchLineAboutStation(String name, ArrayList<Line> allLine) {
         for (Line line : allLine) {
             Station st = new Station(name, line);
             if (line.getStations().contains(st)) {
                 return line.getNumber();
             }
         }
-        return 0;
+        return null;
     }
 }
