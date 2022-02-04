@@ -168,7 +168,7 @@ public class Main {
         StringBuilder builder = new StringBuilder();
         try {
             List<String> lines = Files.readAllLines(Paths.get(DATA_FILE));
-            lines.forEach(line -> builder.append(line));
+            lines.forEach(builder::append);
         } catch (Exception ex) {
             ex.printStackTrace();
             loggerError.log(Level.ERROR, ex.getMessage());

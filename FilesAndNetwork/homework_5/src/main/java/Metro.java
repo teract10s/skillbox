@@ -6,9 +6,8 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Metro {
-    private ArrayList<Station> allStations;
     private ArrayList<Line> allLine;
-    private ArrayList<List<Station>> allConnections;
+    private ArrayList<List<Connect>> allConnections;
 
     public Metro() {
     }
@@ -16,7 +15,6 @@ public class Metro {
     @Override
     public String toString() {
         return "Metro{" +
-                "allStations=" + allStations +
                 "allLine=" + allLine +
                 ", allConnections=" + allConnections +
                 '}';

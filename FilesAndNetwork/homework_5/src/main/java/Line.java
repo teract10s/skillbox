@@ -1,12 +1,9 @@
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Line implements Comparable<Line> {
     private final String number;
     private final String name;
-    @JsonIgnore
     private final List<Station> stations;
 
     public Line(String number, String name) {

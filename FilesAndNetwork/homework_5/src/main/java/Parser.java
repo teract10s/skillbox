@@ -15,8 +15,7 @@ public class Parser {
     public Metro parse(String url) {
         Metro result = new Metro();
         allLine = new ArrayList<>();
-        ArrayList<Station> allStations = new ArrayList<>();
-        ArrayList<List<Station>> allConnections = new ArrayList<>();
+        ArrayList<List<Connect>> allConnections = new ArrayList<>();
 
         try {
             Document doc = Jsoup.connect(url).get();
@@ -38,18 +37,19 @@ public class Parser {
                 allLine.add(line);
             });
 
+
+
             for (Element st : singleStations) {
                 if (!st.select("span[title]").isEmpty()) {
                     String p = st.select("span[title]").toString();
                     String name = st.select("span.name").text();
-                    List<Station> con = (addConnection(p, name, searchLineAboutStation(name, allLine)));
+                    List<Connect> con = (addConnection(p, name, searchLineAboutStation(name, allLine)));
                     allConnections.add(con);
                 }
             }
 
             result.setAllLine(allLine);
             result.setAllConnections(allConnections);
-            result.setAllStations(allStations);
         } catch (Exception ex) {
             logger.error(ex.getMessage());
             System.out.println(ex.getMessage());
@@ -75,39 +75,20 @@ public class Parser {
         return result;
     }
 
-    private List<Station> addConnection(String p, String name, String number) {
+    private List<Connect> addConnection(String p, String name, String number) {
         String[] stations = p.split("\n");
-        List<Station> con = new ArrayList<>();
+        List<Connect> con = new ArrayList<>();
 
-        Station stat1 = new Station(name, getLineAtNumber(number));
-        con.add(stat1);
+        con.add(new Connect(number, name));
 
         for(String st : stations) {
             String nameOfStation = getNameAtSt(st);
             String numberOfLine = getNumberAtSt(st);
 
-            Station stat2 = new Station(nameOfStation, getLineAtNumber(numberOfLine, number));
-            con.add(stat2);
+            Connect connect = new Connect(numberOfLine, nameOfStation);
+            con.add(connect);
         }
         return con;
-    }
-
-    private Line getLineAtNumber(String number){
-        for (Line line : allLine) {
-            if (number.equals(line.getNumber())) {
-                return line;
-            }
-        }
-        return null;
-    }
-
-    private Line getLineAtNumber(String number, String notThisNumber){
-        for (Line line : allLine) {
-            if (number.equals(line.getNumber()) && !line.getNumber().equals(notThisNumber)) {
-                return line;
-            }
-        }
-        return null;
     }
 
     private String getNameAtSt(String st) {
