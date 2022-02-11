@@ -100,3 +100,4 @@ public class Course {
         this.pricePerHour = pricePerHour;
     }
 }
+
