@@ -38,4 +38,20 @@ public class Course {
 
     @Column(name = "price_per_hour")
     private float pricePerHour;
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "\tid=" + id +
+                ", \n\tname='" + name + '\'' +
+                ", \n\tduration=" + duration +
+                ", \n\ttype=" + type +
+                ", \n\tdescription='" + description + '\'' +
+                ", \n\tteacher=" + teacher +
+                ", \n\tstudentsCount=" + studentsCount +
+                ", \n\tstudents=" + students +
+                ", \n\tprice=" + price +
+                ", \n\tpricePerHour=" + pricePerHour +
+                "\n}";
+    }
 }

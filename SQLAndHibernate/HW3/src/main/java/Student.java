@@ -19,4 +19,9 @@ public class Student {
 
     @Column(name = "registration_date")
     private Date registrationDate;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

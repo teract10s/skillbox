@@ -2,6 +2,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -9,6 +10,10 @@ import java.util.Date;
 @Setter
 @Table(name = "purchaselist")
 public class Purchaselist {
+
+    @EmbeddedId
+    private KeyAtName id;
+
     @Column(name = "student_name")
     private String studentName;
 

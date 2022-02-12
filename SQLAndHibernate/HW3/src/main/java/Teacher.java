@@ -17,4 +17,9 @@ public class Teacher {
     private int salary;
 
     private int age;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
