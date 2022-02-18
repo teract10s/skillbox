@@ -26,10 +26,7 @@ public class Purchaselist {
 
     @Column(name = "subscription_date")
     private Date subscriptionDate;
-<<<<<<< HEAD
 
     @Column(name = "course_id", nullable = true)
     private Integer courseId;
-=======
->>>>>>> 24c0c6b6b9168f1751eede3a5fac39b6b5fe1443
 }
