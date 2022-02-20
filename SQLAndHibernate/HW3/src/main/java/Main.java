@@ -1,8 +1,7 @@
 import org.hibernate.Session;
 
-import javax.swing.plaf.nimbus.State;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 public class Main {
@@ -10,7 +9,8 @@ public class Main {
     private static List<Course> courses;
     public static void main(String[] args) throws SQLException {
         Session session = Configuration.getSession();
-        Statement statement = Configuration.getStatement();
+        Connection connection = Configuration.getConnection();
+        connection.setAutoCommit(false);
 
         String hql = "From " + Purchaselist.class.getSimpleName();
         String hqlCourses = "From " + Course.class.getSimpleName();
@@ -18,23 +18,30 @@ public class Main {
 
         students = session.createQuery(hqlStudents).getResultList();
         courses = session.createQuery(hqlCourses).getResultList();
-
         List<Purchaselist> purchaselists = session.createQuery(hql).getResultList();
 
+        session.beginTransaction();
+
         purchaselists.forEach(pl -> {
-            Student student = getStudentIdWithName(pl.getStudentName());
-            Course course = getCourseIdWithName(pl.getCourseName());
-            try {
-                statement.executeUpdate("INSERT " + LinkedPurchaseList.class.getSimpleName() +
-                        " (student_id, course_id) " +
-                        " VALUES (" + getStudentIdWithName(pl.getStudentName()).getId() + ", " +
-                        getCourseIdWithName(pl.getCourseName()).getId() + ")");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            LinkedPurchaseList linkedPurchaseList = getLinkedPurchaseList(pl);
+            session.save(linkedPurchaseList);
         });
-        purchaselists.forEach(System.out::println);
+        session.getTransaction().commit();
         Configuration.closeAll();
+    }
+
+    private static Key getKey(int studentId, int courseId){
+        Key key = new Key();
+        key.setStudentId(studentId);
+        key.setCourseId(courseId);
+        return key;
+    }
+
+    private static LinkedPurchaseList getLinkedPurchaseList(Purchaselist purchaselist){
+        int studentId = getStudentIdWithName(purchaselist.getStudentName()).getId();
+        int courseId = getCourseIdWithName(purchaselist.getCourseName()).getId();
+        Key key = getKey(studentId, courseId);
+        return new LinkedPurchaseList(key, studentId, courseId);
     }
 
     private static Student getStudentIdWithName(String name){

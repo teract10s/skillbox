@@ -13,6 +13,7 @@ import java.sql.Statement;
 public class Configuration {
     private static SessionFactory sessionFactory;
     private static Session session;
+    private static Connection connection;
 
     public static Session getSession() {
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
@@ -23,14 +24,13 @@ public class Configuration {
         return session;
     }
 
-    public static Statement getStatement() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/skillbox";
         String user = "root";
         String pass = "trs.20041711";
 
-        Connection connection = DriverManager.getConnection(url, user, pass);
-        Statement statement = connection.createStatement();
-        return statement;
+        connection = DriverManager.getConnection(url, user, pass);
+        return connection;
     }
 
     public static void closeAll(){
