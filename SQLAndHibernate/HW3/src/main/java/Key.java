@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Setter
 @Embeddable
 public class Key implements Serializable {
-
     @Column(name = "student_id")
     private int studentId;
 

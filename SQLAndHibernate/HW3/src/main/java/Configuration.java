@@ -5,6 +5,11 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class Configuration {
     private static SessionFactory sessionFactory;
     private static Session session;
@@ -16,6 +21,16 @@ public class Configuration {
         session = sessionFactory.openSession();
 
         return session;
+    }
+
+    public static Statement getStatement() throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/skillbox";
+        String user = "root";
+        String pass = "trs.20041711";
+
+        Connection connection = DriverManager.getConnection(url, user, pass);
+        Statement statement = connection.createStatement();
+        return statement;
     }
 
     public static void closeAll(){

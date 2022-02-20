@@ -10,16 +10,15 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "purchaselist")
+@Table(name = "Purchaselist")
 public class Purchaselist {
-
     @EmbeddedId
     private KeyAtName id;
 
-    @Column(name = "student_name")
+    @Column(name = "student_name", insertable = false, updatable = false)
     private String studentName;
 
-    @Column(name = "course_name")
+    @Column(name = "course_name", insertable = false, updatable = false)
     private String courseName;
 
     private int price;
@@ -27,6 +26,18 @@ public class Purchaselist {
     @Column(name = "subscription_date")
     private Date subscriptionDate;
 
-    @Column(name = "course_id", nullable = true)
-    private Integer courseId;
+    @Column(name = "course_id", insertable = false, updatable = false)
+    private String courseId;
+
+    @Override
+    public String toString() {
+        return "Purchaselist{" +
+                "id=" + id +
+                ", studentName='" + studentName + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", price=" + price +
+                ", subscriptionDate=" + subscriptionDate +
+                ", courseId='" + courseId + '\'' +
+                '}';
+    }
 }

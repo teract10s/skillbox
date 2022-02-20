@@ -9,10 +9,9 @@ import java.io.Serializable;
 @Setter
 @Embeddable
 public class KeyAtName implements Serializable {
-
     @Column(name = "student_name")
     private String studentName;
 
-    @Column(name = "course_id")
+    @Column(name = "course_name")
     private String courseName;
 }

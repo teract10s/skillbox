@@ -12,7 +12,6 @@ import java.util.Date;
 @Entity
 @Table(name = "Subscriptions")
 public class Subscription {
-
     @EmbeddedId
     private Key id;
 
