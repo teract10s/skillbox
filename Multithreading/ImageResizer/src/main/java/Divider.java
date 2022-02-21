@@ -13,7 +13,7 @@ public class Divider {
         this.start = start;
     }
 
-    public int separation(int countOfProcessorCores){
+    public void separation(int countOfProcessorCores){
         int smallestCount = files.length / countOfProcessorCores;
         int remainder = files.length - (smallestCount * countOfProcessorCores);
         int currentItem = 0;
@@ -25,8 +25,6 @@ public class Divider {
             ImageResizer resizer = new ImageResizer(files1, dstFolder, newWidth, start);
             new Thread(resizer).start();
             currentItem += files1.length;
-            System.out.println(files1.length);
         }
-        return currentItem;
     }
 }

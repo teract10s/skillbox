@@ -1,7 +1,8 @@
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+
+import static org.imgscalr.Scalr.resize;
 
 public class ImageResizer implements Runnable{
     private final File[] files;
@@ -35,16 +36,5 @@ public class ImageResizer implements Runnable{
             ex.printStackTrace();
         }
         System.out.println("Finished after start: " + (System.currentTimeMillis() - start));
-    }
-
-    public static BufferedImage resize(BufferedImage img, int newW, int newH) {
-        Image tmp = img.getScaledInstance(newW, newH, img.getType());
-        BufferedImage dimg = new BufferedImage(newW, newH, img.getType());
-
-        Graphics2D g2d = dimg.createGraphics();
-        g2d.drawImage(tmp, 0, 0, newW, newH, null);
-        g2d.dispose();
-
-        return dimg;
     }
 }
