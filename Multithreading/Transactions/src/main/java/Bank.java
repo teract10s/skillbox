@@ -69,4 +69,13 @@ public class Bank {
     public void setAccounts(Map<String, Account> accounts) {
         this.accounts = accounts;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder result= new StringBuilder();
+        accounts.forEach((s, a) -> {
+            result.append("\nName of account: ").append(s).append(" {\n\t").append(a);
+        });
+        return result.toString();
+    }
 }

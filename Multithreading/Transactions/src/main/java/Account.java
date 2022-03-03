@@ -13,4 +13,12 @@ public class Account {
         this.accNumber = accNumber;
         this.isLocked = false;
     }
+
+    @Override
+    public String toString() {
+        return "money=" + money +
+                "\n\taccNumber='" + accNumber + '\'' +
+                "\n\tisLocked=" + isLocked +
+                "\n}";
+    }
 }

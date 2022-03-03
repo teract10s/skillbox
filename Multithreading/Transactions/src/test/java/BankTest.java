@@ -70,6 +70,6 @@ class BankTest {
     @Test
     @DisplayName("Получение суммы всех денег на картах")
     void getSumAllAccounts() {
-        Assertions.assertEquals(160000, bank.getSumAllAccounts());
+        Assertions.assertEquals(10159999, bank.getSumAllAccounts());
     }
 }
