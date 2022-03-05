@@ -11,13 +11,14 @@ public class Bank {
         return random.nextBoolean();
     }
 
-    public synchronized void transfer(String fromAccountNum, String toAccountNum, long amount) throws InterruptedException {
-        Account fromAccount =  accounts.get(fromAccountNum);
-        Account toAccount = accounts.get(toAccountNum);
-
-        if (allChecks(fromAccountNum, toAccountNum, amount)){
-            fromAccount.setMoney(fromAccount.getMoney() - amount);
-            toAccount.setMoney(toAccount.getMoney() + amount);
+    public void transfer(String fromAccountNum, String toAccountNum, long amount) throws InterruptedException {
+        synchronized (accounts) {
+            Account fromAccount = accounts.get(fromAccountNum);
+            Account toAccount = accounts.get(toAccountNum);
+            if (allChecks(fromAccountNum, toAccountNum, amount)) {
+                fromAccount.setMoney(fromAccount.getMoney() - amount);
+                toAccount.setMoney(toAccount.getMoney() + amount);
+            }
         }
     }
 
