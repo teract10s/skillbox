@@ -11,13 +11,7 @@ public class Bank {
         return random.nextBoolean();
     }
 
-    /**
-     * TODO: реализовать метод. Метод переводит деньги между счетами. Если сумма транзакции > 50000,
-     * то после совершения транзакции, она отправляется на проверку Службе Безопасности – вызывается
-     * метод isFraud. Если возвращается true, то делается блокировка счетов (как – на ваше
-     * усмотрение)
-     */
-    public void transfer(String fromAccountNum, String toAccountNum, long amount) throws InterruptedException {
+    public synchronized void transfer(String fromAccountNum, String toAccountNum, long amount) throws InterruptedException {
         Account fromAccount =  accounts.get(fromAccountNum);
         Account toAccount = accounts.get(toAccountNum);
 
@@ -41,15 +35,9 @@ public class Bank {
                 return false;
             }
         }
-        if (fromAccount.getMoney() - amount < 0) {
-            return false;
-        }
-        return true;
+        return fromAccount.getMoney() - amount >= 0;
     }
 
-    /**
-     * TODO: реализовать метод. Возвращает остаток на счёте.
-     */
     public long getBalance(String accountNum) {
         return accounts.get(accountNum).getMoney();
     }
@@ -73,9 +61,7 @@ public class Bank {
     @Override
     public String toString() {
         StringBuilder result= new StringBuilder();
-        accounts.forEach((s, a) -> {
-            result.append("\nName of account: ").append(s).append(" {\n\t").append(a);
-        });
+        accounts.forEach((s, a) -> result.append("\nName of account: ").append(s).append(" {\n\t").append(a));
         return result.toString();
     }
 }
