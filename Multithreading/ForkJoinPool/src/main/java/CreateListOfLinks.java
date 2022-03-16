@@ -20,6 +20,8 @@ public class CreateListOfLinks extends RecursiveTask<Set<String>> {
 
     @Override
     protected Set<String> compute() {
+        paths.add(url);
+        
         List<CreateListOfLinks> taskList = new ArrayList<>();
 
         try {
@@ -34,23 +36,20 @@ public class CreateListOfLinks extends RecursiveTask<Set<String>> {
             e.printStackTrace();
         }
 
-        for (CreateListOfLinks task : taskList){
-            paths.addAll(task.join());
-        }
+        taskList.forEach(CreateListOfLinks::join);
 
         return paths;
     }
 
-    private Set<String> getCurrentPaths(String url) throws IOException{
+    private Set<String> getCurrentPaths(String url) throws IOException, InterruptedException {
         Set<String> currentPaths = new HashSet<>();
+        Thread.sleep((int) (Math.random() * 50 + 100));
         Document doc = Jsoup.connect(url).ignoreContentType(true).get();
-
         Elements href = doc.select("a[href]");
         href.forEach(h -> {
             String currentUrl = h.absUrl("href");
             if (checkURL(currentUrl) && addNewURL(currentUrl)) {
                 currentPaths.add(currentUrl);
-//                System.out.println(currentUrl + "\t" + checkURL(currentUrl));
             }
         });
 
