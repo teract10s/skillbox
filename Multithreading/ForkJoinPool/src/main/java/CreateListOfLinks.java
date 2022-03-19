@@ -21,7 +21,7 @@ public class CreateListOfLinks extends RecursiveTask<Set<String>> {
     @Override
     protected Set<String> compute() {
         paths.add(url);
-        
+
         List<CreateListOfLinks> taskList = new ArrayList<>();
 
         try {
