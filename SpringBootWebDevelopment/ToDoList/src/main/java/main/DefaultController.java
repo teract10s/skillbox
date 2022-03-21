@@ -5,9 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class DefaultController {
-
     @RequestMapping("/")
-    public double index(){
-        return Math.random();
+    public String list(){
+        return Storage.getAllMission().toString();
     }
 }
