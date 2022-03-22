@@ -1,12 +1,10 @@
 package main;
 
-import org.apache.logging.log4j.Level;
-import response.Mission;
+import main.essence.Mission;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static main.Main.loggerInfo;
 
 public class Storage {
     private static int currentId = 1;
@@ -22,8 +20,6 @@ public class Storage {
         int id = currentId++;
         mission.setId(id);
         missions.put(id, mission);
-        loggerInfo.info("Add mission: " + mission.getName()
-                + ". With id: " + id);
         return id;
     }
 
@@ -36,8 +32,6 @@ public class Storage {
 
     public static boolean removeMission (int missionId){
         if (missions.containsKey(missionId)){
-            loggerInfo.info("Delete missions: " + missions.get(missionId).getName()
-                    + ". With id: " + missionId);
             missions.remove(missionId);
             return true;
         }
