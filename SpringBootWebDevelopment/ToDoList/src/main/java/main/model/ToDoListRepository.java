@@ -1,2 +1,8 @@
-package main.model;public interface ToDoListRepository {
+package main.model;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ToDoListRepository extends CrudRepository<Mission, Integer> {
 }
