@@ -1,99 +1,55 @@
 package main.controllers;
 
+import main.service.ToDoListService;
 import main.model.Mission;
 
-import main.model.ToDoListRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class ToDoListController {
-    @Autowired
-    private ToDoListRepository toDoListRepository;
 
-    @GetMapping("/")
-    public List<Mission> list(){
-        Iterable<Mission> missionIterable = toDoListRepository.findAll();
-        ArrayList<Mission> missions = new ArrayList<>();
-        for (Mission mission : missionIterable){
-            missions.add(mission);
-        }
-        return missions;
+    private final ToDoListService service;
+
+    public ToDoListController(ToDoListService service) {
+        this.service = service;
     }
 
-    @GetMapping("/ToDoList/")
+    @GetMapping("/")
     public List<Mission> getAllMission(){
-        Iterable<Mission> missionIterable = toDoListRepository.findAll();
-        ArrayList<Mission> missions = new ArrayList<>();
-        for (Mission mission : missionIterable){
-            missions.add(mission);
-        }
-        return missions;
+        return service.getAllMission();
     }
 
     @GetMapping("/ToDoList/{id}")
-    public ResponseEntity get(@PathVariable int id){
-        Optional<Mission> optionalMission = toDoListRepository.findById(id);
-        if (!optionalMission.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        return new ResponseEntity(optionalMission.get(), HttpStatus.OK);
+    public ResponseEntity<Mission> get(@PathVariable int id){
+        return service.getMission(id);
     }
 
+    @RequestMapping
     @PostMapping("/ToDoList/")
     public int add(Mission mission){
-        Mission newMission = toDoListRepository.save(mission);
-        return newMission.getId();
+        return service.addMission(mission);
     }
 
     @PutMapping("/ToDoList/{id}")
-    public ResponseEntity editAllLine(@PathVariable int id, Mission mission){
-        Optional<Mission> optionalMission = toDoListRepository.findById(id);
-        if (!optionalMission.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        Mission currentMission = optionalMission.get();
-        currentMission.setName(mission.getName());
-        currentMission.setDateCreating(mission.getDateCreating());
-        currentMission.setDeadline(mission.getDeadline());
-        currentMission.setComplete(mission.isComplete());
-        return new ResponseEntity(toDoListRepository.save(currentMission), HttpStatus.OK);
+    public ResponseEntity<Mission> editAllLine(@PathVariable int id, Mission mission){
+        return service.editAllLineAtMission(id, mission);
     }
 
     @PatchMapping("/ToDoList/{id}")
-    public ResponseEntity editSomeLine(@PathVariable int id, Mission mission){
-        Optional<Mission> optionalMission = toDoListRepository.findById(id);
-        if (!optionalMission.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        Mission currentMission = optionalMission.get();
-
-        if (mission.getName() != null) {
-            currentMission.setName(mission.getName());
-        }
-        if (mission.getDateCreating() != null) {
-            currentMission.setDateCreating(mission.getDateCreating());
-        }
-        if (mission.getDeadline() != null) {
-            currentMission.setDeadline(mission.getDeadline());
-        }
-        currentMission.setComplete(mission.isComplete());
-        return new ResponseEntity(toDoListRepository.save(currentMission), HttpStatus.OK);
+    public ResponseEntity<Mission> editSomeLine(@PathVariable int id, Mission mission){
+        return service.editSomeLineAtMission(id, mission);
     }
 
     @DeleteMapping("/ToDoList/")
     public void deleteMissions(){
-        toDoListRepository.deleteAll();
+        service.deleteAllMissions();
     }
 
     @DeleteMapping("/ToDoList/{id}")
     public void deleteMission(@PathVariable int id){
-        toDoListRepository.deleteById(id);
+        service.deleteOneMission(id);
     }
 }

@@ -1,4 +1,4 @@
-package main;
+package main.service;
 
 import main.model.Mission;
 import main.model.ToDoListRepository;
@@ -13,10 +13,14 @@ import java.util.Optional;
 @Service
 public class ToDoListService {
 
-    private ToDoListRepository toDoListRepository;
+    private ToDoListRepository repository;
+
+    public ToDoListService(ToDoListRepository repository) {
+        this.repository = repository;
+    }
 
     public List<Mission> getAllMission(){
-        Iterable<Mission> missionIterable = toDoListRepository.findAll();
+        Iterable<Mission> missionIterable = repository.findAll();
         ArrayList<Mission> missions = new ArrayList<>();
         for (Mission mission : missionIterable){
             missions.add(mission);
@@ -25,7 +29,7 @@ public class ToDoListService {
     }
 
     public ResponseEntity<Mission> getMission(int id){
-        Optional<Mission> optionalMission = toDoListRepository.findById(id);
+        Optional<Mission> optionalMission = repository.findById(id);
         if (!optionalMission.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -33,12 +37,12 @@ public class ToDoListService {
     }
 
     public int addMission(Mission mission){
-        Mission newMission = toDoListRepository.save(mission);
+        Mission newMission = repository.save(mission);
         return newMission.getId();
     }
 
     public ResponseEntity<Mission> editAllLineAtMission(int id, Mission mission){
-        Optional<Mission> optionalMission = toDoListRepository.findById(id);
+        Optional<Mission> optionalMission = repository.findById(id);
         if (!optionalMission.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -47,11 +51,11 @@ public class ToDoListService {
         currentMission.setDateCreating(mission.getDateCreating());
         currentMission.setDeadline(mission.getDeadline());
         currentMission.setComplete(mission.isComplete());
-        return new ResponseEntity<Mission>(toDoListRepository.save(currentMission), HttpStatus.OK);
+        return new ResponseEntity<Mission>(repository.save(currentMission), HttpStatus.OK);
     }
 
     public ResponseEntity<Mission> editSomeLineAtMission(int id, Mission mission){
-        Optional<Mission> optionalMission = toDoListRepository.findById(id);
+        Optional<Mission> optionalMission = repository.findById(id);
         if (!optionalMission.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -67,14 +71,14 @@ public class ToDoListService {
             currentMission.setDeadline(mission.getDeadline());
         }
         currentMission.setComplete(mission.isComplete());
-        return new ResponseEntity<Mission>(toDoListRepository.save(currentMission), HttpStatus.OK);
+        return new ResponseEntity<Mission>(repository.save(currentMission), HttpStatus.OK);
     }
 
     public void deleteAllMissions(){
-        toDoListRepository.deleteAll();
+        repository.deleteAll();
     }
 
     public void deleteOneMission(int id){
-        toDoListRepository.deleteById(id);
+        repository.deleteById(id);
     }
 }
