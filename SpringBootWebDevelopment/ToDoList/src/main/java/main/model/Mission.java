@@ -31,4 +31,5 @@ public class Mission {
                 "\n\tisComplete = " + isComplete +
                 "\n}\n";
     }
+
 }
