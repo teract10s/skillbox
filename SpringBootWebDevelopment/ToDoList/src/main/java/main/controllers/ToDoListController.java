@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 public class ToDoListController {
-
     private final ToDoListService service;
 
     public ToDoListController(ToDoListService service) {
