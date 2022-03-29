@@ -28,36 +28,33 @@ public class ToDoListService {
         return missions;
     }
 
-    public ResponseEntity<Mission> getMission(int id){
+    public Mission getMission(int id){
         Optional<Mission> optionalMission = repository.findById(id);
-        if (!optionalMission.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        return new ResponseEntity<Mission>(optionalMission.get(), HttpStatus.OK);
+        return optionalMission.get();
     }
 
-    public int addMission(Mission mission){
+    public Mission addMission(Mission mission){
         Mission newMission = repository.save(mission);
-        return newMission.getId();
+        return newMission;
     }
 
-    public ResponseEntity<Mission> editAllLineAtMission(int id, Mission mission){
+    public Mission editAllLineAtMission(int id, Mission mission){
         Optional<Mission> optionalMission = repository.findById(id);
         if (!optionalMission.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return null;
         }
         Mission currentMission = optionalMission.get();
         currentMission.setName(mission.getName());
         currentMission.setDateCreating(mission.getDateCreating());
         currentMission.setDeadline(mission.getDeadline());
         currentMission.setComplete(mission.isComplete());
-        return new ResponseEntity<Mission>(repository.save(currentMission), HttpStatus.OK);
+        return repository.save(currentMission);
     }
 
-    public ResponseEntity<Mission> editSomeLineAtMission(int id, Mission mission){
+    public Mission editSomeLineAtMission(int id, Mission mission){
         Optional<Mission> optionalMission = repository.findById(id);
         if (!optionalMission.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return null;
         }
         Mission currentMission = optionalMission.get();
 
@@ -71,7 +68,7 @@ public class ToDoListService {
             currentMission.setDeadline(mission.getDeadline());
         }
         currentMission.setComplete(mission.isComplete());
-        return new ResponseEntity<Mission>(repository.save(currentMission), HttpStatus.OK);
+        return repository.save(currentMission);
     }
 
     public void deleteAllMissions(){
