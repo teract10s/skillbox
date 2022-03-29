@@ -31,7 +31,7 @@ public class ToDoListController {
     }
     
     @PostMapping("/todolist/")
-    public Mission add(Mission mission){
+    public Mission add(@RequestBody Mission mission){
         return service.addMission(mission);
     }
 
