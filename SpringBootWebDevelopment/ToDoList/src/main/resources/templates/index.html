@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My todolist</title>
+</head>
+
+<body>
+    <div>
+        <h1>My todolist (<span th:text="${missionCount}">0</span>)</h1>
+        <div th:each="mission : ${missions}">
+            <a href="#" th:attr="mission-id=${mission.id}" th:text="${mission.name}"> </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/todolist/")
 public class ToDoListController {
     private final ToDoListService service;
 
@@ -22,7 +23,7 @@ public class ToDoListController {
         return service.getAllMission();
     }
 
-    @GetMapping("/todolist/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Mission> get(@PathVariable int id){
         if (service.getMission(id) == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -30,12 +31,12 @@ public class ToDoListController {
         return new ResponseEntity<Mission>(service.getMission(id), HttpStatus.OK);
     }
     
-    @PostMapping("/todolist/")
+    @PostMapping("/")
     public Mission add(@RequestBody Mission mission){
         return service.addMission(mission);
     }
 
-    @PutMapping("/todolist/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Mission> editAllLine(@PathVariable int id, Mission mission){
         if (service.editAllLineAtMission(id, mission) == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -43,7 +44,7 @@ public class ToDoListController {
         return new ResponseEntity<Mission>(service.editAllLineAtMission(id, mission), HttpStatus.OK);
     }
 
-    @PatchMapping("/todolist/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Mission> editSomeLine(@PathVariable int id, Mission mission){
         if (service.editSomeLineAtMission(id, mission) == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -51,14 +52,17 @@ public class ToDoListController {
         return new ResponseEntity<Mission>(service.editSomeLineAtMission(id, mission), HttpStatus.OK);
     }
 
-    @DeleteMapping("/todolist/")
-    public void deleteMissions(){
+    @DeleteMapping("/")
+    public ResponseEntity<Mission> deleteMissions(){
         service.deleteAllMissions();
+        return new ResponseEntity<Mission>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/todolist/{id}")
-    public void deleteMission(@PathVariable int id){
-        service.deleteOneMission(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Mission> deleteMission(@PathVariable int id) {
+        if (service.deleteOneMission(id)) {
+            return new ResponseEntity<Mission>(HttpStatus.OK);
+        }
+        return new ResponseEntity<Mission>(HttpStatus.NOT_FOUND);
     }
-    
 }

@@ -72,7 +72,11 @@ public class ToDoListService {
         repository.deleteAll();
     }
 
-    public void deleteOneMission(int id){
-        repository.deleteById(id);
+    public boolean deleteOneMission(int id){
+        if (repository.findById(id).isPresent()) {
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
