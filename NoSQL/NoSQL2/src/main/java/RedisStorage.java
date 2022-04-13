@@ -1,49 +1,33 @@
-import org.redisson.Redisson;
-import org.redisson.api.RKeys;
-import org.redisson.api.RScoredSortedSet;
-import org.redisson.api.RedissonClient;
-import org.redisson.client.RedisConnectionException;
-import org.redisson.config.Config;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
-import static java.lang.System.out;
+import java.util.Collections;
+import java.util.Set;
 
 public class RedisStorage {
-    private RedissonClient redisson;
-    private RScoredSortedSet<String> onlineUsers;
-    private RKeys rKeys;
+    private static Jedis j = null;
     private final static String KEY = "USERS";
 
-    void init() {
-        Config config = new Config();
-        config.useSingleServer().setAddress("redis://127.0.0.1:6379");
-        try {
-            redisson = Redisson.create(config);
-        } catch (RedisConnectionException Exc) {
-            out.println("Не удалось подключиться к Redis");
-            out.println(Exc.getMessage());
-        }
-        rKeys = redisson.getKeys();
-        onlineUsers = redisson.getScoredSortedSet(KEY);
-        rKeys.delete(KEY);
+    public void init(){
+        JedisPool jedisPool = new JedisPool("127.0.0.1", 6379);
+        j = new Jedis("127.0.0.1", 6379);
+        j = jedisPool.getResource();
     }
 
-    void shutdown() {
-        redisson.shutdown();
+    public void add(int numberInTheQueue, int userId) {
+        j.zadd(KEY, numberInTheQueue, String.valueOf(userId));
     }
 
-    void add(int numberInTheQueue, int userId) {
-        onlineUsers.add(numberInTheQueue, String.valueOf(userId));
-    }
-
-    void delete(int numberInTheQueue) {
-        onlineUsers.remove(numberInTheQueue);
-    }
-
-    public RScoredSortedSet<String> getOnlineUsers() {
-        return onlineUsers;
+    public void delete(int numberInTheQueue) {
+        j.zrem(KEY, String.valueOf(numberInTheQueue));
     }
 
     public String getFirstUserInQueue(){
-        return onlineUsers.first();
+        Set<String> range = j.zrange(KEY, 0, 0);
+        return String.valueOf(range).substring(1, String.valueOf(range).length() - 1);
+    }
+
+    public Set<String> getAllUser(){
+        return j.zrange(KEY, 0, 20);
     }
 }

@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Set;
 
 public class SiteWork {
     private static final int USERS = 20;
@@ -8,29 +9,51 @@ public class SiteWork {
     public static void main(String[] args) throws InterruptedException {
         redis = new RedisStorage();
         redis.init();
-        init();
+        create();
 
-        int i = 0;
         for (;;){
-            i++;
-            for(int j = 0; j < USERS; j++) {
-                if (i == 10) {
-                    i = 0;
+            for(int j = 1; j < USERS; j++) {
+                if (new Random().nextInt(10) == 7) {
                     int userId = new Random().nextInt(20);
-                    redis.delete(userId);
-                    redis.add(1, userId);
+                    System.out.println("> Пользователь " + userId + " оплатил платную услугу");
+                    Thread.sleep(100);
+                    refactorQueue(1, userId);
                 }
-                String firstUserAtQueue = redis.getFirstUserInQueue();
-                System.out.println("На главной странице показываем пользователя " + firstUserAtQueue);
-                redis.delete(Integer.parseInt(firstUserAtQueue));
-                redis.add(20, Integer.parseInt(firstUserAtQueue));
+                int firstUserAtQueue = Integer.parseInt(redis.getFirstUserInQueue());
+                System.out.println(" — На главной странице показываем пользователя " + firstUserAtQueue);
+                Thread.sleep(100);
+                refactorQueue(20, firstUserAtQueue);
             }
             Thread.sleep(SLEEP);
         }
     }
 
-    private static void init(){
-        for (int j = 0; j < USERS; j++){
+    private static void refactorQueue(int number, int userId){
+        Set<String> queue = redis.getAllUser();
+        if (number == 1){
+            int i = 0;
+            for (String user : queue){
+                i++;
+                if (i <= number){
+                    redis.add(i + 1, Integer.parseInt(user));
+                }
+            }
+            redis.add(number, userId);
+            return;
+        }
+
+        int i = 0;
+        for (String user : queue){
+            i++;
+            if (!user.equals(String.valueOf(userId))){
+                redis.add(i - 1, Integer.parseInt(user));
+            }
+        }
+        redis.add(number, userId);
+    }
+
+    private static void create(){
+        for (int j = 1; j <= USERS; j++){
             redis.add(j, j);
         }
     }
