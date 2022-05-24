@@ -48,11 +48,6 @@ public class Menu {
                 if (parts.length == 1){
                     mongoDB.getStats();
                 }
-
-                mongoDB.getProducts().forEach(System.out::print);
-                System.out.println();
-                mongoDB.getShops().forEach(System.out::print);
-                System.out.println();
                 break;
             default:
                 break;
