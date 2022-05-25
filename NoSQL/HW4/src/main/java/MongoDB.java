@@ -108,15 +108,19 @@ public class MongoDB {
         for (Document d : shopJoined) {
             System.out.println(d.get("Name"));
             List<Document> currentList = d.getList("ProductAtShop", Document.class);
-            System.out.println("\tОбщее количество наименований товаров:" + currentList.size());
             List<Product> productList = new ArrayList<>();
             currentList.forEach(i -> {
                 productList.add(new Product(i.getString("Name"), i.getInteger("Price")));
             });
-            System.out.println("\tСредняя цена товаров: " + (double) productList.stream().mapToInt(Product::getPrice).sum() / productList.size());
-            System.out.println("\tСамый дорогой товар: " + productList.stream().mapToInt(Product::getPrice).max().getAsInt());
-            System.out.println("\tСамый дешевый товар: " + productList.stream().mapToInt(Product::getPrice).min().getAsInt());
-            System.out.println("\tКоличество товаров дешевле 100 рублей: " + getCountWherePriseLess(productList, 100));
+            if (!productList.isEmpty()) {
+                System.out.println("\tОбщее количество наименований товаров:" + currentList.size());
+                System.out.println("\tСредняя цена товаров: " + (double) productList.stream().mapToInt(Product::getPrice).sum() / productList.size());
+                System.out.println("\tСамый дорогой товар: " + productList.stream().mapToInt(Product::getPrice).max().getAsInt());
+                System.out.println("\tСамый дешевый товар: " + productList.stream().mapToInt(Product::getPrice).min().getAsInt());
+                System.out.println("\tКоличество товаров дешевле 100 рублей: " + getCountWherePriseLess(productList, 100));
+            } else {
+                System.out.println("\tМагазин пуст");
+            }
         }
     }
 

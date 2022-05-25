@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Menu {
@@ -29,13 +28,13 @@ public class Menu {
         switch (parts[0]){
             case "ДОБАВИТЬ_МАГАЗИН":
                 if (parts.length == 2){
-                    Shop shop = new Shop(parts[1], new ArrayList<>());
+//                    Shop shop = new Shop(parts[1], new ArrayList<>());
                     mongoDB.addShop(parts[1]);
                 }
                 break;
             case "ДОБАВИТЬ_ТОВАР":
                 if (parts.length == 3){
-                    Product product = new Product(parts[1], Integer.parseInt(parts[2]));
+//                    Product product = new Product(parts[1], Integer.parseInt(parts[2]));
                     mongoDB.addProduct(parts[1], Integer.parseInt(parts[2]));
                 }
                 break;
