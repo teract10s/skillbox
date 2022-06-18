@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainForm {
     private JButton collapse;
@@ -61,13 +63,18 @@ public class MainForm {
     }
 
     private void expendBranch(){
-        if (expand.getText().split(" ").length >= 2) {
+        String[] world = expand.getText().split(" ");
+        if (world.length >= 2) {
             lSurname.setVisible(true);
             lName.setVisible(true);
             lPatronymic.setVisible(true);
             surname.setVisible(true);
             name.setVisible(true);
             patronymic.setVisible(true);
+
+            surname.setText(world[0]);
+            name.setText(world[1]);
+            if (world.length == 3) patronymic.setText(world[2]);
 
             collapse.setLabel("Collapse");
 
@@ -92,7 +99,7 @@ public class MainForm {
             surname.setVisible(false);
             name.setVisible(false);
             patronymic.setVisible(false);
-
+            expand.setText(surname.getText() + ' ' + name.getText() + ' ' + patronymic.getText());
             expand.setVisible(true);
         }else{
             JOptionPane.showMessageDialog(
