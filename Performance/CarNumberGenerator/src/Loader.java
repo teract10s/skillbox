@@ -1,41 +1,15 @@
 import java.io.FileOutputStream;
 
 public class Loader {
-
+    private static final char[] letters = {'У', 'К', 'Е', 'Н', 'Х', 'В', 'А', 'Р', 'О', 'С', 'М', 'Т'};
     public static void main(String[] args) throws Exception {
-        long start = System.currentTimeMillis();
-
-        FileOutputStream writer = new FileOutputStream("res/numbers.txt");
-
-        char letters[] = {'У', 'К', 'Е', 'Н', 'Х', 'В', 'А', 'Р', 'О', 'С', 'М', 'Т'};
-        for (int number = 1; number < 1000; number++) {
-            int regionCode = 199;
-            for (char firstLetter : letters) {
-                for (char secondLetter : letters) {
-                    for (char thirdLetter : letters) {
-                        String carNumber = firstLetter + padNumber(number, 3) +
-                            secondLetter + thirdLetter + padNumber(regionCode, 2);
-                        writer.write(carNumber.getBytes());
-                        writer.write('\n');
-                    }
-                }
-            }
-        }
-
-        writer.flush();
-        writer.close();
-
-        System.out.println((System.currentTimeMillis() - start) + " ms");
-    }
-
-    private static String padNumber(int number, int numberLength) {
-        String numberStr = Integer.toString(number);
-        int padSize = numberLength - numberStr.length();
-
-        for (int i = 0; i < padSize; i++) {
-            numberStr = '0' + numberStr;
-        }
-
-        return numberStr;
+        StreamingWriter writer1 = new StreamingWriter(letters, new FileOutputStream("res/number1.txt"));
+        StreamingWriter writer2 = new StreamingWriter(letters, new FileOutputStream("res/number2.txt"));
+        StreamingWriter writer3 = new StreamingWriter(letters, new FileOutputStream("res/number3.txt"));
+        StreamingWriter writer4 = new StreamingWriter(letters, new FileOutputStream("res/number4.txt"));
+        writer1.start();
+        writer2.start();
+        writer3.start();
+        writer4.start();
     }
 }
