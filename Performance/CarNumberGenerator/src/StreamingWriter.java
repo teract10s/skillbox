@@ -1,16 +1,15 @@
 import java.io.FileOutputStream;
 
-public class StreamingWriter extends Thread{
-    private final char[] letters;
+public class StreamingWriter {
+    private final char[] letters = {'У', 'К', 'Е', 'Н', 'Х', 'В', 'А', 'Р', 'О', 'С', 'М', 'Т'};
     private final FileOutputStream writer;
 
-    public StreamingWriter(char[] letters, FileOutputStream writer) {
-        this.letters = letters;
+    public StreamingWriter( FileOutputStream writer) {
         this.writer = writer;
+        generate();
     }
 
-    @Override
-    public void run() {
+    private void generate() {
         long start = System.currentTimeMillis();
          try{
             for (int number = 0; number < 1000; number++) {
@@ -20,9 +19,17 @@ public class StreamingWriter extends Thread{
                 for (char firstLetter : letters) {
                     for (char secondLetter : letters) {
                         for (char thirdLetter : letters) {
-                            buffer.append(firstLetter).append(padNumber(number, 3))
+
+                            String strNumber = String.valueOf(number);
+                            if (number <= 9){
+                                strNumber = "00" + strNumber;
+                            }else if (number <= 99){
+                                strNumber = "0" + strNumber;
+                            }
+
+                            buffer.append(firstLetter).append(strNumber)
                                     .append(secondLetter).append(thirdLetter)
-                                    .append(padNumber(regionCode, 2)).append('\n');
+                                    .append(regionCode).append('\n');
                         }
                     }
                 }
@@ -35,12 +42,5 @@ public class StreamingWriter extends Thread{
             e.printStackTrace();
         }
         System.out.println((System.currentTimeMillis() - start) + " ms");
-    }
-
-    private static String padNumber(int number, int numberLength) {
-        String numberStr = Integer.toString(number);
-        int padSize = numberLength - numberStr.length();
-
-        return "0".repeat(Math.max(0, padSize)) + numberStr;
     }
 }

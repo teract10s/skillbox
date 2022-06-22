@@ -1,15 +1,14 @@
-import java.io.FileOutputStream;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Loader {
-    private static final char[] letters = {'У', 'К', 'Е', 'Н', 'Х', 'В', 'А', 'Р', 'О', 'С', 'М', 'Т'};
     public static void main(String[] args) throws Exception {
-        StreamingWriter writer1 = new StreamingWriter(letters, new FileOutputStream("res/number1.txt"));
-        StreamingWriter writer2 = new StreamingWriter(letters, new FileOutputStream("res/number2.txt"));
-        StreamingWriter writer3 = new StreamingWriter(letters, new FileOutputStream("res/number3.txt"));
-        StreamingWriter writer4 = new StreamingWriter(letters, new FileOutputStream("res/number4.txt"));
-        writer1.start();
-        writer2.start();
-        writer3.start();
-        writer4.start();
+        LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
+        AtomicBoolean flag = new AtomicBoolean(true);
+        Consumer consumer = new Consumer(queue, flag);
+        Producer producer = new Producer(queue, flag);
+        producer.producing();
+        consumer.consuming();
+        consumer.consuming();
     }
 }
